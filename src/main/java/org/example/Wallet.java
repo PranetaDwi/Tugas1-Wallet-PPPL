@@ -118,6 +118,7 @@ public class Wallet {
 
     public static void main(String[] args) {
         Wallet myWallet = new Wallet("Praneta");
+        myWallet.setOwner("Dwi");
         myWallet.addMoney(10000);
         myWallet.addCoin(500);
         myWallet.addCard("KTP");
@@ -131,7 +132,5 @@ public class Wallet {
         System.out.println("Sisa uang: " + myWallet.getMoneyAvailable());
 
     }
-
-
 
 }

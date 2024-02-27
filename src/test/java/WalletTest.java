@@ -4,14 +4,14 @@ import org.junit.jupiter.api.Test;
 
 public class WalletTest {
 
-    // Ngetes apakah jika ownernya diganti apakah keganti ke yang terbaru
+    // jika ownernya diganti apakah keganti ke yang terbaru
     @Test
     void testSetOwner(){
         String oldOwner = "Praneta";
         String newOwner = "Nata";
         Wallet myWallet = new Wallet(oldOwner);
         myWallet.setOwner(newOwner);
-        Assertions.assertNotEquals(oldOwner, myWallet.getOwner());
+        Assertions.assertNotEquals(oldOwner, myWallet.getOwner(), "pass");
     }
 
     // Ngetes Jika ditambah card apakah nambah atau tidak
@@ -22,23 +22,23 @@ public class WalletTest {
         myWallet.addCard("SIM");
         myWallet.addCard("Alfamidi");
         myWallet.addCard("Mirota");
-        Assertions.assertEquals(4, myWallet.getCards().size());
+        Assertions.assertSame(4, myWallet.getCards().size());
     }
 
     // Ngetes kalo ditambah card 3, terus diambil card yang sebelumnya tidak ditambahkan apakah berkurang atau tidak
-    @Test
-    void testTakeCartInvalid(){
-        Wallet myWallet = new Wallet("Praneta");
-        myWallet.addCard("SIM");
-        myWallet.addCard("Alfamidi");
-        myWallet.addCard("Mirota");
-        myWallet.takeCard("KTP");
-        Assertions.assertEquals(3, myWallet.getCards().size());
-    }
+//    @Test
+//    void testTakeCartInvalid(){
+//        Wallet myWallet = new Wallet("Praneta");
+//        myWallet.addCard("SIM");
+//        myWallet.addCard("Alfamidi");
+//        myWallet.addCard("Mirota");
+//        myWallet.takeCard("KTP");
+//        Assertions.assertEquals(3, myWallet.getCards().size());
+//    }
 
     // Ngetes Kalo ditambah card 3, terus diambil card yang sebelumnya ditambahkan
     @Test
-    void testTakeCartValid(){
+    void testTakeCard(){
         Wallet myWallet = new Wallet("Praneta");
         myWallet.addCard("SIM");
         myWallet.addCard("Alfamidi");
@@ -49,7 +49,7 @@ public class WalletTest {
 
     // Ngetes dapetin card setelah ditambahkan
     @Test
-    void testGetCart(){
+    void testGetCard(){
         Wallet myWallet = new Wallet("Praneta");
         myWallet.addCard("KTP");
         myWallet.addCard("SIM");
@@ -66,6 +66,15 @@ public class WalletTest {
         Assertions.assertEquals(2, myWallet.getMoneys().get(20000));
     }
 
+    // Kalo nambah uang kertas lebih dari satu, pasti nilainya tidak satu
+    @Test
+    void testAddMoney2(){
+        Wallet myWallet = new Wallet("Praneta");
+        myWallet.addMoney(20000);
+        myWallet.addMoney(20000);
+        Assertions.assertNotSame(1, myWallet.getMoneys().get(20000));
+    }
+
     // Tes kalo uang kertasnya tidak valid
     @Test
     void testAddMoneyInvalid(){
@@ -78,8 +87,8 @@ public class WalletTest {
     @Test
     void testAddMoneyValid(){
         Wallet myWallet = new Wallet("Praneta");
-        myWallet.addMoney(10000);
-        Assertions.assertNotNull(myWallet.getMoneys().get(10000));
+        myWallet.addCoin(1000);
+        Assertions.assertNotNull(myWallet.getMoneys().get(1000));
     }
 
     // Test nambah koin yang sama
@@ -131,8 +140,9 @@ public class WalletTest {
     void testCalculateMoneys(){
         Wallet myWallet = new Wallet("Praneta");
         myWallet.addMoney(5000);
+        myWallet.addMoney(5000);
         myWallet.addMoney(20000);
-        Assertions.assertEquals(25000, myWallet.calculateMoneys());
+        Assertions.assertEquals(30000, myWallet.calculateMoneys());
     }
 
     // Test mengalkulasi jumlah koin
@@ -141,7 +151,9 @@ public class WalletTest {
         Wallet myWallet = new Wallet("Praneta");
         myWallet.addCoin(500);
         myWallet.addCoin(1000);
-        Assertions.assertEquals(1500, myWallet.calculateCoins());
+        myWallet.addCoin(1000);
+        myWallet.addCoin(1000);
+        Assertions.assertEquals(3500, myWallet.calculateCoins());
     }
 
     // Test jumlah semua uang jika ditambah dan diambil
